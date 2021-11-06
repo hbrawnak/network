@@ -94,8 +94,6 @@ class AuthController extends Controller
                 $token              = auth()->tokenById($authenticated_user->uuid);
                 $user               = Helper::userFormattedResponse($authenticated_user);
             }
-        } catch (JWTException $exception) {
-            $message = $exception->getMessage();
         } catch (Exception $exception) {
             $message = $exception->getMessage();
         }
