@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
@@ -30,8 +31,16 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $hidden = [
-        'password',
-        'remember_token',
+        'id',
+        'password'
+    ];
+
+    /**
+     * @var array
+     */
+    protected $dates = [
+        'created_at',
+        'updated_at'
     ];
 
     public function setPasswordAttribute($password)
@@ -39,6 +48,11 @@ class User extends Authenticatable implements JWTSubject
         if (!empty($password)) {
             $this->attributes['password'] = bcrypt($password);
         }
+    }
+
+    public function getCreatedAtAttribute($value)
+    {
+        return Carbon::createFromTimeStamp(strtotime($value))->toFormattedDateString();
     }
 
     /**
@@ -51,7 +65,7 @@ class User extends Authenticatable implements JWTSubject
 
 
     /**
-     * @return array
+     *
      */
     public function getJWTCustomClaims()
     {
