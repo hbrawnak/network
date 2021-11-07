@@ -13,6 +13,16 @@ class PageRepository implements PageRepositoryInterface
 {
 
     /**
+     * @var Page
+     */
+    private $page;
+
+    public function __construct(Page $page)
+    {
+        $this->page = $page;
+    }
+
+    /**
      * @param Request $request
      * @param string $user_id
      * @return Page
@@ -26,5 +36,15 @@ class PageRepository implements PageRepositoryInterface
         $page->save();
 
         return $page;
+    }
+
+
+    /**
+     * @param string $id
+     * @return bool
+     */
+    public function exist(string $id): bool
+    {
+        return $this->page->where('uuid', $id)->exists();
     }
 }

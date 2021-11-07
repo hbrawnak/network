@@ -63,4 +63,14 @@ class UserRepository implements UserRepositoryInterface
     {
         return $this->user->where('email', $email)->first();
     }
+
+
+    /**
+     * @param string $id
+     * @return bool
+     */
+    public function exist(string $id): bool
+    {
+        return $this->user->where('uuid', $id)->exists();
+    }
 }

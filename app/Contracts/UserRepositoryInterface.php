@@ -12,4 +12,6 @@ interface UserRepositoryInterface
     public function find(string $id);
 
     public function findByEmail(string $email);
+
+    public function exist(string $id);
 }

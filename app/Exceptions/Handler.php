@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
+use Exception;
 
 class Handler extends ExceptionHandler
 {
@@ -37,5 +38,24 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+
+    /**
+     * Render an exception into an HTTP response.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param Throwable $exception
+     */
+    public function render($request, Throwable $exception)
+    {
+        if ($request->is('api*')) {
+            return response()->json([
+                'error' => true,
+                'message' => $exception->getMessage()
+            ], 404);
+        }
+
+        return parent::render($request, $exception);
     }
 }
