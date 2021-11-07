@@ -12,6 +12,8 @@ use JWTAuth;
 
 class AuthController extends Controller
 {
+
+
     /**
      * @param Request $request
      * @param UserRepository $userRepository
@@ -34,32 +36,28 @@ class AuthController extends Controller
             ], 401);
         }
 
-        $response = [];
-        $error    = true;
-        $code     = 401;
-
         try {
             $user = $userRepository->create($request);
-
-            $error    = false;
-            $code     = 201;
-            $message  = 'User registration is successful';
-            $response = Helper::userFormattedResponse($user);
-
+            return response()->json([
+                'error' => false,
+                'message' => 'User registration is successful',
+                'response' => Helper::userFormattedResponse($user)
+            ], 201);
         } catch (Exception $exception) {
-            $message = $exception->getMessage();
+            return response()->json([
+                'error' => true,
+                'message' => $exception->getMessage(),
+                'response' => []
+            ], 401);
         }
-
-
-        return response()->json([
-            'error' => $error,
-            'message' => $message,
-            'response' => $response
-        ], $code);
     }
 
 
-    public function login(Request $request, UserRepository $userRepository)
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
 
@@ -78,37 +76,41 @@ class AuthController extends Controller
             ], 401);
         }
 
-
-        $error = true;
-        $code  = 401;
-        $token = null;
-
         try {
             if (!JWTAuth::attempt($credentials)) {
-                $message = 'Email or Password doesn\'t match';
-            } else {
-                $error              = false;
-                $code               = 200;
-                $message            = 'User is logged in successfully';
-                $authenticated_user = auth()->user();
-                $token              = auth()->tokenById($authenticated_user->uuid);
-                $user               = Helper::userFormattedResponse($authenticated_user);
+                return response()->json([
+                    'error' => true,
+                    'message' => 'Email or Password doesn\'t match',
+                    'response' => []
+                ], 401);
             }
         } catch (Exception $exception) {
-            $message = $exception->getMessage();
+            return response()->json([
+                'error' => true,
+                'message' => $exception->getMessage(),
+                'response' => []
+            ], 401);
         }
 
+        $authenticated_user = auth()->user();
+        $token              = auth()->tokenById($authenticated_user->id);
+        $user               = Helper::userFormattedResponse($authenticated_user);
+
         return response()->json([
-            'error' => $error,
-            'message' => $message,
+            'error' => false,
+            'message' => 'User is logged in successfully',
             'response' => [
                 'user' => $user,
                 'token' => $token,
             ]
-        ], $code);
+        ], 200);
     }
 
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function logout(Request $request)
     {
         $token = $request->header('Authorization');
