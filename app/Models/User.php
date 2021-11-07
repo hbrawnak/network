@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
@@ -43,6 +44,9 @@ class User extends Authenticatable implements JWTSubject
         'updated_at'
     ];
 
+    /**
+     * @param $password
+     */
     public function setPasswordAttribute($password)
     {
         if (!empty($password)) {
@@ -50,6 +54,10 @@ class User extends Authenticatable implements JWTSubject
         }
     }
 
+    /**
+     * @param $value
+     * @return string
+     */
     public function getCreatedAtAttribute($value)
     {
         return Carbon::createFromTimeStamp(strtotime($value))->toFormattedDateString();
@@ -72,6 +80,9 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
+    /**
+     * @return HasMany
+     */
     public function posts()
     {
         return $this->hasMany(Post::class, 'source_id', 'uuid')->where('source_type', '=', self::SOURCE_TYPE);
