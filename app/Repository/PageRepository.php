@@ -47,4 +47,15 @@ class PageRepository implements PageRepositoryInterface
     {
         return $this->page->where('uuid', $id)->exists();
     }
+
+
+    /**
+     * @param string $id
+     * @param string $user_id
+     * @return bool
+     */
+    public function owner(string $id, string $user_id): bool
+    {
+        return $this->page->where('uuid', $id)->where('user_id', $user_id)->exists();
+    }
 }
