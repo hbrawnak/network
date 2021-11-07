@@ -18,7 +18,6 @@ class CreatePagesTable extends Migration
             $table->uuid('uuid')->index();
             $table->uuid('user_id')->index();
             $table->string('name', 100);
-            $table->string('address')->nullable();
             $table->timestamps();
         });
     }
