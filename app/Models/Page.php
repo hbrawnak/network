@@ -9,7 +9,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Page extends Model
 {
 
-    const SOURCE_TYPE = 1;
+    const SOURCE_TYPE_USER = 0;
+    const SOURCE_TYPE_PAGE = 1;
+
+    const SOURCE_TYPE = [
+        self::SOURCE_TYPE_USER => 'User',
+        self::SOURCE_TYPE_PAGE => 'Page'
+    ];
 
     /**
      * @param $value
@@ -26,6 +32,6 @@ class Page extends Model
      */
     public function posts()
     {
-        return $this->hasMany(Post::class, 'source_id', 'uuid')->where('source_type', '=', self::SOURCE_TYPE);
+        return $this->hasMany(Post::class, 'source_id', 'uuid')->where('source_type', '=', self::SOURCE_TYPE_PAGE);
     }
 }

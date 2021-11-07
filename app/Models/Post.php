@@ -15,4 +15,15 @@ class Post extends Model
         self::SOURCE_TYPE_PAGE => 'Page'
     ];
 
+
+    public function user()
+    {
+        return $this->hasOne(User::class, 'uuid', 'source_id');
+    }
+
+    public function page()
+    {
+        return $this->hasOne(Page::class, 'uuid', 'source_id');
+    }
+
 }

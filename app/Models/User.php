@@ -12,7 +12,13 @@ class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
 
-    const SOURCE_TYPE = 0;
+    const SOURCE_TYPE_USER = 0;
+    const SOURCE_TYPE_PAGE = 1;
+
+    const SOURCE_TYPE = [
+        self::SOURCE_TYPE_USER => 'User',
+        self::SOURCE_TYPE_PAGE => 'Page'
+    ];
 
     /**
      * The attributes that are mass assignable.
@@ -85,7 +91,7 @@ class User extends Authenticatable implements JWTSubject
      */
     public function posts()
     {
-        return $this->hasMany(Post::class, 'source_id', 'uuid')->where('source_type', '=', self::SOURCE_TYPE);
+        return $this->hasMany(Post::class, 'source_id', 'uuid')->where('source_type', '=', self::SOURCE_TYPE_USER);
     }
 
 }

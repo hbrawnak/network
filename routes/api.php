@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\FeedController;
 use App\Http\Controllers\FollowerController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PostController;
@@ -33,6 +34,6 @@ Route::prefix('follow')->group(function () {
 Route::prefix('person')->group(function () {
     Route::group(['middleware' => ['jwt.verify']], function () {
         Route::post('/attach-post', [PostController::class, 'user_post']);
-        //Route::get('/feed', []);
+        Route::get('/feed', [FeedController::class, 'get_feed']);
     });
 });
