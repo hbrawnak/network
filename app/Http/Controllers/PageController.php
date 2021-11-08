@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Helper;
 use App\Repository\PageRepository;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class PageController extends Controller
@@ -30,7 +29,7 @@ class PageController extends Controller
         }
 
         try {
-            $user = Auth::user();
+            $user = auth()->user();
             $page = $pageRepository->create($request, $user->uuid);
 
             return response()->json([

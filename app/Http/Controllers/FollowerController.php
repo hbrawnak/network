@@ -8,7 +8,6 @@ use App\Models\Follower;
 use App\Repository\FollowerRepository;
 use App\Repository\PageRepository;
 use App\Repository\UserRepository;
-use Illuminate\Support\Facades\Auth;
 
 
 class FollowerController extends Controller
@@ -28,7 +27,7 @@ class FollowerController extends Controller
             ], 401);
         }
 
-        $user = Auth::user();
+        $user = auth()->user();
 
         if ($followerRepository->exist($user->uuid, $personId, Follower::SOURCE_TYPE_USER)) {
             return response()->json([
@@ -64,7 +63,7 @@ class FollowerController extends Controller
             ], 401);
         }
 
-        $user = Auth::user();
+        $user = auth()->user();
 
         if ($followerRepository->exist($user->uuid, $pageId, Follower::SOURCE_TYPE_PAGE)) {
             return response()->json([
@@ -74,7 +73,6 @@ class FollowerController extends Controller
             ], 401);
         }
 
-        $user    = Auth::user();
         $process = new ProcessFollower($user->uuid, $pageId, Follower::SOURCE_TYPE_PAGE);
         $this->dispatch($process);
 

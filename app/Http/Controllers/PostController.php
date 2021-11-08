@@ -6,7 +6,6 @@ use App\Jobs\ProcessPost;
 use App\Models\Post;
 use App\Repository\PageRepository;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class PostController extends Controller
@@ -30,7 +29,7 @@ class PostController extends Controller
         }
 
 
-        $user    = Auth::user();
+        $user    = auth()->user();
         $process = new ProcessPost(
             $user->uuid, Post::SOURCE_TYPE_USER, $request->input('text')
         );
@@ -65,7 +64,7 @@ class PostController extends Controller
             ], 401);
         }
 
-        $user    = Auth::user();
+        $user = auth()->user();
 
         if (!$pageRepository->owner($pageId, $user->uuid)) {
             return response()->json([
