@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Validator;
 class PageController extends Controller
 {
     /**
+     * After data validation it's calling to PageRepository to create new pages.
+     *
      * @param Request $request
      * @param PageRepository $pageRepository
      * @return \Illuminate\Http\JsonResponse

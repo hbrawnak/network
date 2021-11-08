@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Validator;
 class PostController extends Controller
 {
     /**
+     * User post is creating though queue. Queue is basically calling the repository
+     * under the hood.
+     *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
@@ -42,6 +45,15 @@ class PostController extends Controller
         ], 201);
     }
 
+    /**
+     * Page post is creating though queue. Queue is basically calling the repository
+     * under the hood.
+     *
+     * @param Request $request
+     * @param $pageId
+     * @param PageRepository $pageRepository
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function page_post(Request $request, $pageId, PageRepository $pageRepository)
     {
         $validator = Validator::make($request->all(), [

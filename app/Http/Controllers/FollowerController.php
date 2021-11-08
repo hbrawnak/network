@@ -13,6 +13,9 @@ use App\Repository\UserRepository;
 class FollowerController extends Controller
 {
     /**
+     * Following new user is managing through queue. Queue is calling
+     * to repository to create new following.
+     *
      * @param string $personId
      * @param UserRepository $userRepository
      * @return \Illuminate\Http\JsonResponse
@@ -49,6 +52,9 @@ class FollowerController extends Controller
 
 
     /**
+     * Following new page is managing through queue. Queue is calling
+     * to repository to create new following.
+     *
      * @param string $pageId
      * @param PageRepository $pageRepository
      * @return \Illuminate\Http\JsonResponse
