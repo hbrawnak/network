@@ -26,4 +26,15 @@ class Post extends Model
         return $this->hasOne(Page::class, 'uuid', 'source_id');
     }
 
+    public function scopeOwner($query)
+    {
+        return $query
+            ->when($this->source_type == self::SOURCE_TYPE_USER, function ($q) {
+                return $q->with('user');
+            })
+            ->when($this->source_type == self::SOURCE_TYPE_PAGE, function ($q) {
+                return $q->with('page');
+            });
+    }
+
 }
