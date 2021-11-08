@@ -6,7 +6,6 @@ namespace App\Repository;
 
 use App\Contracts\PostRepositoryInterface;
 use App\Models\Post;
-use Illuminate\Support\Facades\DB;
 use Ramsey\Uuid\Uuid;
 use Illuminate\Support\Facades\Cache;
 
@@ -14,11 +13,11 @@ class PostRepository implements PostRepositoryInterface
 {
     const TTL_ONE_MINUTE = 60;
 
-    private $db;
+    private $post;
 
-    public function __construct(DB $db)
+    public function __construct(Post $post)
     {
-        $this->db = $db;
+        $this->post = $post;
     }
 
     /**
@@ -39,14 +38,14 @@ class PostRepository implements PostRepositoryInterface
         return $post;
     }
 
-    public function feed(array $following, string $user_id, int $page, int $limit)
+    public function feed(array $following, string $user_id)
     {
-        $key = 'users:feed:' . $user_id . ':' . $page;
-        return Cache::remember($key, self::TTL_ONE_MINUTE, function () use ($following, $limit) {
-            return $this->db::table('posts')
-                ->select('uuid as id', 'text', 'source_id', 'source_type', 'created_at')
+        $key = 'users:feed:' . $user_id;
+        return Cache::remember($key, self::TTL_ONE_MINUTE, function () use ($following) {
+            return $this->post->select('uuid', 'text', 'source_id', 'source_type', 'created_at')
                 ->whereIn('source_id', $following)
-                ->paginate($limit);
+                ->orderBy('created_at', 'desc')
+                ->get();
         });
     }
 }

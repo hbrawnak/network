@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
@@ -15,26 +16,39 @@ class Post extends Model
         self::SOURCE_TYPE_PAGE => 'Page'
     ];
 
+    /**
+     * @var array
+     */
+    protected $dates = [
+        'created_at',
+        'updated_at'
+    ];
+
+    /**
+     * @param $value
+     * @return string
+     */
+    public function getCreatedAtAttribute($value)
+    {
+        return Carbon::createFromTimeStamp(strtotime($value))->diffForHumans();
+    }
 
     public function user()
     {
-        return $this->hasOne(User::class, 'uuid', 'source_id');
+        return $this->belongsTo(User::class, 'source_id', 'uuid');
     }
 
     public function page()
     {
-        return $this->hasOne(Page::class, 'uuid', 'source_id');
+        return $this->belongsTo(Page::class, 'source_id', 'uuid');
     }
 
-    public function scopeOwner($query)
+    public function owner()
     {
-        return $query
-            ->when($this->source_type == self::SOURCE_TYPE_USER, function ($q) {
-                return $q->with('user');
-            })
-            ->when($this->source_type == self::SOURCE_TYPE_PAGE, function ($q) {
-                return $q->with('page');
-            });
+        if ($this->source_type === self::SOURCE_TYPE_USER) {
+            return $this->belongsTo(User::class, 'source_id', 'uuid');
+        } else if ($this->source_type === self::SOURCE_TYPE_PAGE)
+            return $this->belongsTo(Page::class, 'source_id', 'uuid');
     }
 
 }

@@ -20,6 +20,8 @@ class User extends Authenticatable implements JWTSubject
         self::SOURCE_TYPE_PAGE => 'Page'
     ];
 
+    protected $appends = array('name');
+
     /**
      * The attributes that are mass assignable.
      *
@@ -38,7 +40,6 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $hidden = [
-        'id',
         'password'
     ];
 
@@ -84,6 +85,11 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function getNameAttribute()
+    {
+        return "{$this->first_name} {$this->last_name}";
     }
 
     /**

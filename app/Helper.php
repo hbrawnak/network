@@ -3,13 +3,15 @@
 
 namespace App;
 
-class Helper
+use Illuminate\Support\Facades\Facade;
+
+class Helper extends Facade
 {
     /**
      * @param $user
      * @return array
      */
-    public static function userFormattedResponse($user): array
+    public function userFormattedResponse($user): array
     {
         return [
             'id' => $user->uuid,
@@ -24,7 +26,7 @@ class Helper
      * @param $page
      * @return array
      */
-    public static function pageFormattedResponse($page): array
+    public function pageFormattedResponse($page): array
     {
         return [
             'id' => $page->uuid,
@@ -32,5 +34,26 @@ class Helper
             'name' => $page->name,
             'created_at' => $page->created_at,
         ];
+    }
+
+    /**
+     * @param $feeds
+     * @return array
+     */
+    public function formattedFeed($feeds)
+    {
+        $feedArr = [];
+        foreach ($feeds as $feed) {
+            $feedArr[] = [
+                'id' => $feed->uuid,
+                'text' => $feed->text,
+                'created_at' => $feed->created_at,
+                'owner' => [
+                    'name' => $feed->owner->name
+                ]
+            ];
+        }
+
+        return $feedArr;
     }
 }
