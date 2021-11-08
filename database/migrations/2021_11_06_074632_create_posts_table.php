@@ -16,7 +16,7 @@ class CreatePostsTable extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->uuid('uuid')->index();
+            $table->uuid('uuid')->unique()->index();
             $table->uuid('source_id');
             $table->tinyInteger('source_type');
             $table->string('text', 255);
