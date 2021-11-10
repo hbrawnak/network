@@ -1,7 +1,5 @@
-# network
-
 ### Overview
-I have tried to get a better output in this short time. I have used redis and queue mechanism to make the system better. I think it's not the best still. There are a lot of rooms to improve. Feed query can be optimized and more test for other cases.
+It's a social network example for sharing knowledge. Create post, create pages, following users and pages are the main features in this project.
 
 ### Installation Process
 
