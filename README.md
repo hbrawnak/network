@@ -1,5 +1,5 @@
 ### Overview
-It's a social network example for sharing knowledge. Create post, create pages, following users and pages are the main features in this project.
+It's a social network example for sharing knowledge. Create posts, create pages, following users and pages are the main features in this project.
 
 ### Installation Process
 
